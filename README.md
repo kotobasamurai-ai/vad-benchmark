@@ -74,7 +74,22 @@ noisy data.
 |---|---|---|
 | `webrtc` | binary | `webrtcvad-wheels`. Aggressiveness 0–3. |
 | `silero` | continuous prob | `silero-vad` v6, PyTorch (optional ONNX). |
-| `aicoustics` | binary | `aic-sdk` ≥ 2.0, Quail VAD. Needs `AICOUSTICS_LICENSE_KEY`. |
+| `aicoustics` | binary | `aic-sdk` ≥ 2.0, Quail VAD (`quail-l-16khz` by default). Needs `AICOUSTICS_LICENSE_KEY`. |
+
+### AI-coustics model choice
+
+The SDK ships several Quail variants. The VAD is "built into" the enhancement model,
+so the choice matters. Measured on our synthetic set (166 s, 52 % speech, default
+`sensitivity=6`):
+
+| model | precision | recall | F1 | FPR |
+|---|---|---|---|---|
+| **`quail-l-16khz`** (default) | **0.975** | 0.805 | 0.882 | **0.022** |
+| `quail-vf-2.0-l-16khz` (Voice Focus 2.0) | 0.922 | 0.837 | 0.877 | 0.076 |
+
+`quail-l` is the more conservative pick and wins on precision / FPR. `vf-2.0` trades
+precision for recall. Override via the `AiCousticsEngine(model_id=...)` constructor
+in `src/vad_benchmark/engines/aicoustics.py`.
 
 Binary-output engines are compared fairly via `vad-bench sweep`, which runs each
 operating point separately and draws the ROC curve from the resulting `(FPR, TPR)`
