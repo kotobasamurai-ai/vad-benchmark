@@ -1,0 +1,9 @@
+esc50:
+  root: data/esc50
+
+voxconverse:
+  audio_root: data/voxconverse/test
+  rttm_root: data/voxconverse-labels/test
+
+synthetic:
+  root: data/synthetic

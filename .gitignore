@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+
+# Local data and models (do not commit)
+data/
+models/
+results/
+*.wav
+*.flac
+*.mp3
+.env
